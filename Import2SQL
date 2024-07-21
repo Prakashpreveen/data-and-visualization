@@ -1,0 +1,13 @@
+import pandas as pd
+from sqlalchemy import create_engine
+from credential import username, password, host, database, port
+
+database_engine = create_engine(f'mysql+mysqlconnector://{username}:{password}@{host}:{port}/{database}')
+
+file_path = 'fabricated_data.xlsx' 
+df = pd.read_excel(file_path)
+
+table_name = 'product_details'
+df.to_sql(name=table_name, con=database_engine, if_exists='append', index=False)
+
+print(f'Data successfully imported into {table_name} table in {database} database.')
